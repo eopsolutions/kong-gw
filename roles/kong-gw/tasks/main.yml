@@ -1,0 +1,43 @@
+---
+- name: Install prerequisite packages for kong-gw
+  apt:
+    pkg:
+      - automake
+      - build-essential
+      - curl 
+      - cmake
+      - file 
+      - git
+      - libyaml-dev
+      - libprotobuf-dev
+      - m4
+      - perl
+      - pkg-config
+      - procps 
+      - unzip 
+      - valgrind 
+      - zlib1g-dev
+      - libssl-dev
+    state: present
+
+- name: Download rust dependencies for kong
+  shell: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o /home/test.sh"
+
+- name: Install rust dependencies for ats kong
+  shell: 'sh /home/test.sh -y'
+
+#CLoning git repo
+- name: Cloning git repo
+  git:
+    repo: 'https://github.com/Kong/kong'
+    dest: /home/kong
+    version: master
+
+#copying script for luarocks and lua 
+- name: Copying script for luarocks and lua
+  copy:
+    src: files/script.sh
+    dest: /home/script.sh
+   
+- name: Running script on remote machine
+  shell: 'bash /home/script.sh '

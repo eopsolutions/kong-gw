@@ -1,0 +1,6 @@
+- hosts: kong
+  become: yes
+  gather_facts: no
+  roles:
+   - kong-gw
+     
